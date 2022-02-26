@@ -4,33 +4,36 @@
     v-model="valid"
     @submit.prevent="onSubmit"
   >
-    <v-row>
-      <v-col
-        cols="12"
-        md="8"
-      >
-        <v-text-field
-          v-model="todoText"
-          :rules="taskRules"
-          label="Task text"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+    <v-container>
 
-    <v-row>
-      <v-col
-        cols="12"
-        md="4"
-      >
-        <v-btn
-          block
-          type="submit"
+      <v-row justify="center" align="center">
+
+        <v-col
+          cols="12"
+          md="8"
         >
-          ADD
-        </v-btn>
-      </v-col>
+          <v-text-field
+            v-model="todoText"
+            :rules="taskRules"
+            label="Task text"
+          ></v-text-field>
+        </v-col>
 
-    </v-row>
+        <v-col
+          cols="12"
+          md="4"
+        >
+          <v-btn
+            block
+            type="submit"
+          >
+            ADD
+          </v-btn>
+        </v-col>
+
+      </v-row>
+
+    </v-container>
 
   </v-form>
 

@@ -3,21 +3,20 @@
     class="mx-auto"
     outlined
   >
-    <v-row justify="center" align="center">
+    <v-card-title>
+      Todo List
+    </v-card-title>
 
-      <div style="margin-bottom: 10px">
-        <TaskCreator :onCreate="onTodoCreated"/>
-      </div>
+    <v-row justify="center" align="center">
+      <TaskCreator :onCreate="onTodoCreated"/>
     </v-row>
 
     <v-row justify="center" align="center">
-      <div>
-        <TaskList
-          :todos="todos"
-          :changed="onTodoChanged"
-          :deleted="onTodoDeleted"
-        />
-      </div>
+      <TaskList
+        :todos="todos"
+        :changed="onTodoChanged"
+        :deleted="onTodoDeleted"
+      />
     </v-row>
   </v-card>
 </template>

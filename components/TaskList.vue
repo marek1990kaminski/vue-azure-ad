@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-list dense>
     <div
       v-for="(todo) in todos"
       id="taskContainer"
@@ -10,8 +10,8 @@
         Delete
       </button>
     </div>
-  </div>
 
+  </v-list>
 </template>
 
 <script lang="ts">

@@ -16,7 +16,7 @@ export interface UseTodos {
   onTodoCreated: (todo: Todo) => void;
 }
 
-export const useTodos = (): UseTodos => {
+const getTodos = (): UseTodos => {
   const todos: Ref<Array<Todo>> = ref([]);
 
   const onTodoCreated: UseTodos['onTodoCreated'] = (todo: Todo): void => {
@@ -44,3 +44,7 @@ export const useTodos = (): UseTodos => {
     onTodoChanged
   };
 };
+
+const todos: UseTodos = getTodos();
+
+export const useTodos = () => todos;
