@@ -1,17 +1,25 @@
 <template>
-  <v-row justify="center" align="center">
-    <div style="margin-bottom: 10px">
-      <TaskCreator :onCreate="onTodoCreated"/>
-    </div>
+  <v-card
+    class="mx-auto"
+    outlined
+  >
+    <v-row justify="center" align="center">
 
-    <div>
-      <TaskList
-        :todos="todos"
-        :changed="onTodoChanged"
-        :deleted="onTodoDeleted"
-      />
-    </div>
-  </v-row>
+      <div style="margin-bottom: 10px">
+        <TaskCreator :onCreate="onTodoCreated"/>
+      </div>
+    </v-row>
+
+    <v-row justify="center" align="center">
+      <div>
+        <TaskList
+          :todos="todos"
+          :changed="onTodoChanged"
+          :deleted="onTodoDeleted"
+        />
+      </div>
+    </v-row>
+  </v-card>
 </template>
 
 <script lang="ts">

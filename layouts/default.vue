@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    dark
-  >
+  <v-app dark>
 
     <v-navigation-drawer
       v-model="drawer"
@@ -71,8 +69,8 @@ export default defineComponent({
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
+          icon: 'mdi-alert-circle',
+          title: 'Example error',
           to: '/inspire'
         }
       ],

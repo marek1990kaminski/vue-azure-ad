@@ -29,8 +29,6 @@ export default defineComponent({
     logger.debug('props in error', props);
     const pageNotFound: string = '404 Not Found';
     const otherError: string = 'An error occurred';
-    const meta = useMeta();
-    logger.debug('meta in error', meta);
 
     const {title} = useMeta();
     title.value = props.error.statusCode === 404 ? pageNotFound : otherError;
