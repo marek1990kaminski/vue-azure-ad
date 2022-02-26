@@ -1,83 +1,55 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
+    <div style="margin-bottom: 10px">
+      <TaskCreator :onCreate="onTodoCreated"/>
+    </div>
+
+    <div>
+      <TaskList
+        :todos="todos"
+        :changed="onTodoChanged"
+        :deleted="onTodoDeleted"
+      />
+    </div>
   </v-row>
 </template>
 
-<script>
-export default {
-  name: 'IndexPage'
-}
+<script lang="ts">
+import {defineComponent} from '@nuxtjs/composition-api';
+import loggerFactory, {Logger} from '~/utils/logger';
+import TaskCreator from '~/components/TaskCreator.vue';
+import TaskList from '~/components/TaskList.vue';
+import {useTodos} from '~/hooks/useTodos';
+
+const logger: Logger = loggerFactory.create('index');
+
+export default defineComponent({
+  name: 'IndexPage',
+  components: {
+    TaskCreator,
+    TaskList
+  },
+
+  setup() {
+    const {
+      todos,
+      onTodoCreated,
+      onTodoDeleted,
+      onTodoChanged
+    } = useTodos();
+    // const addTodo2 = () => {
+    //   store.commit(_add, 'aaa');
+    // };
+    //
+    // addTodo2();
+    //
+    // console.log('store.state.todos2', store.state.todos);
+    return {
+      todos,
+      onTodoChanged,
+      onTodoDeleted,
+      onTodoCreated
+    };
+  }
+});
 </script>

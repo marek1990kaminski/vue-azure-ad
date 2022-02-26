@@ -46,6 +46,8 @@ module.exports = {
     'vue/html-self-closing': OFF,
     'vue/multiline-html-element-content-newline': OFF,
     'vue/attribute-hyphenation': OFF,
-    '@typescript-eslint/no-unused-vars': WARN
+    '@typescript-eslint/no-unused-vars': WARN,
+    camelcase: WARN
   }
+
 };

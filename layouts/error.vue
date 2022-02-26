@@ -1,19 +1,22 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
+    <h1>
+      {{ templateTitle }}
     </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
+
     <NuxtLink to="/">
       Home page
     </NuxtLink>
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {defineComponent, useMeta} from '@nuxtjs/composition-api';
+import loggerFactory, {Logger} from '~/utils/logger';
+
+const logger: Logger = loggerFactory.create('Error');
+
+export default defineComponent({
   name: 'EmptyLayout',
   layout: 'empty',
   props: {
@@ -22,20 +25,24 @@ export default {
       default: null
     }
   },
-  data () {
+  setup(props) {
+    logger.debug('props in error', props);
+    const pageNotFound: string = '404 Not Found';
+    const otherError: string = 'An error occurred';
+    const meta = useMeta();
+    logger.debug('meta in error', meta);
+
+    const {title} = useMeta();
+    title.value = props.error.statusCode === 404 ? pageNotFound : otherError;
+
+    const templateTitle = title.value;
+
     return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
-    }
+      templateTitle
+    };
   },
-  head () {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title
-    }
-  }
-}
+  head: {}
+});
 </script>
 
 <style scoped>
