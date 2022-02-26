@@ -1,7 +1,6 @@
 <template>
 
   <v-form
-    v-model="valid"
     @submit.prevent="onSubmit"
   >
     <v-container>
@@ -42,9 +41,9 @@
 
 <script lang="ts">
 
-import {defineComponent, PropType, Ref, ref} from '@nuxtjs/composition-api';
+import {defineComponent, Ref, ref} from '@nuxtjs/composition-api';
 import loggerFactory, {Logger} from '@/utils/logger';
-import {UseTodos} from '@/hooks/useTodos';
+import {useTodos} from '~/hooks/useTodos';
 
 const logger: Logger = loggerFactory.create('TaskCreator');
 
@@ -53,22 +52,16 @@ const getId = () => id++;
 
 export default defineComponent({
   name: 'TaskCreator',
-  props: {
-    onCreate: {
-      type: Function as PropType<UseTodos['onTodoCreated']>,
-      required: true
-    }
-
-  },
-  setup(props) {
+  setup() {
 
     const todoText: Ref<string> = ref('');
+
+    const {onTodoCreated} = useTodos();
 
     const onchange = (event: any): void => {
       logger.debug('event', event);
     };
 
-    const valid: Ref<boolean> = ref(true);
     const onSubmit = () => {
       logger.debug('onSubmit!!!', {
         id: getId(),
@@ -77,7 +70,7 @@ export default defineComponent({
       });
 
       if (todoText.value !== '') {
-        props.onCreate(
+        onTodoCreated(
           {
             id: getId(),
             text: todoText.value,
@@ -97,8 +90,7 @@ export default defineComponent({
       onchange,
       todoText,
       onSubmit,
-      taskRules,
-      valid: true
+      taskRules
     };
   }
 });
