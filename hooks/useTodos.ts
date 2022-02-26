@@ -1,6 +1,4 @@
 import {ref, Ref} from '@nuxtjs/composition-api';
-// @ts-ignore damn lodash
-import {clone} from 'lodash';
 import loggerFactory, {Logger} from '@/utils/logger';
 
 const logger: Logger = loggerFactory.create('UseTodos');
@@ -11,12 +9,18 @@ export interface Todo {
   completed: boolean;
 }
 
+let id = 0;
+export const getId = () => {
+  id = id + 1;
+  logger.debug('id', id);
+  return id;
+};
+
 export interface UseTodos {
   todos: Ref<Array<Todo>>;
   onTodoToggle: (id: Todo['id']) => void;
   onTodoDeleted: (id: Todo['id']) => void;
   onTodoCreated: (todo: Todo) => void;
-  onTodoChanged: (todo: Todo) => void;
 }
 
 const getTodos = (): UseTodos => {
@@ -33,7 +37,7 @@ const getTodos = (): UseTodos => {
 
   const onTodoToggle = (id: Todo['id']): void => {
     const index: number = todos.value.findIndex(t => t.id === id);
-    const item: Todo = todos.value[id];
+    const item: Todo = todos.value[index];
     todos.value = [
       ...todos.value.slice(0, index),
       {
@@ -44,21 +48,11 @@ const getTodos = (): UseTodos => {
     ];
   };
 
-  const onTodoChanged = (todo: Todo): void => {
-    const todosCopy: Array<Todo> = clone([...todos.value]);
-
-    const index: number = todosCopy.findIndex(t => t.id === todo.id);
-    todosCopy[index] = {...todosCopy[index], ...todo};
-    todos.value = todosCopy;
-
-  };
-
   return {
     todos,
     onTodoCreated,
     onTodoDeleted,
-    onTodoToggle,
-    onTodoChanged
+    onTodoToggle
   };
 };
 

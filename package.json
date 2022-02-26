@@ -20,13 +20,12 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/composition-api": "^0.32.0",
     "@nuxtjs/fontawesome": "^1.1.2",
+    "@types/lodash": "^4.14.179",
     "core-js": "^3.19.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
-    "nuxt-lodash": "^2.1.1",
     "tiny-emitter": "^2.1.0",
     "vue": "^2.6.14",
-    "vue-lodash": "^2.1.2",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
     "vuetify": "^2.6.1",
@@ -39,7 +38,6 @@
     "@nuxtjs/eslint-config-typescript": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.3",
-    "@types/lodash": "^4.14.179",
     "@vue/test-utils": "^1.3.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.4.4",
@@ -48,7 +46,6 @@
     "eslint-plugin-vue": "^8.2.0",
     "jest": "^27.4.4",
     "ts-jest": "^27.1.1",
-    "vue-cli-plugin-lodash": "~0.1.4",
     "vue-jest": "^3.0.4"
   }
 }

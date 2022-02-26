@@ -1,17 +1,30 @@
 <template>
   <v-container>
 
-    <v-list dense max-width="500px" class="mx-auto">
+    <v-list dense max-width="600px" class="mx-auto">
       <v-list-item
         v-for="(todo) in todos"
         id="taskContainer"
         :key="todo.id"
       >
 
-        <v-list-item-content> {{ todo.text }}</v-list-item-content>
-        <v-btn @click.prevent="onTodoDeleted(todo.id)">
+        <v-list-item-content class="mr-4">
+          <v-chip
+            :class="`chip ${todo.completed ? 'text-decoration-line-through':''}`"
+            large
+            @click.stop="onTodoToggle(todo.id)"
+          >
+            {{ todo.text }}
+          </v-chip>
+        </v-list-item-content>
+
+        <v-btn
+          color="red"
+          @click.prevent="onTodoDeleted(todo.id)"
+        >
           Delete
         </v-btn>
+
       </v-list-item>
 
     </v-list>
@@ -32,12 +45,14 @@ export default defineComponent({
   setup() {
     const {
       onTodoDeleted,
+      onTodoToggle,
       todos
     } = useTodos();
 
     return {
       todos,
-      onTodoDeleted
+      onTodoDeleted,
+      onTodoToggle
     };
   }
 
@@ -46,4 +61,7 @@ export default defineComponent({
 
 <style scoped>
 
+.chip:hover {
+  cursor: pointer;
+}
 </style>
