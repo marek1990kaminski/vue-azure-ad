@@ -1,51 +1,43 @@
 <template>
-  <v-list dense>
-    <div
-      v-for="(todo) in todos"
-      id="taskContainer"
-      :key="todo.id"
-    >
-      {{ todo.text }}
-      <button @click.prevent="getOnDelete(todo.id)">
-        Delete
-      </button>
-    </div>
+  <v-container>
 
-  </v-list>
+    <v-list dense max-width="500px" class="mx-auto">
+      <v-list-item
+        v-for="(todo) in todos"
+        id="taskContainer"
+        :key="todo.id"
+      >
+
+        <v-list-item-content> {{ todo.text }}</v-list-item-content>
+        <v-btn @click.prevent="onTodoDeleted(todo.id)">
+          Delete
+        </v-btn>
+      </v-list-item>
+
+    </v-list>
+  </v-container>
 </template>
 
 <script lang="ts">
 
-import {defineComponent, PropType} from '@nuxtjs/composition-api';
+import {defineComponent} from '@nuxtjs/composition-api';
 import loggerFactory, {Logger} from '@/utils/logger';
-import {Todo, UseTodos} from '@/hooks/useTodos';
+import {useTodos} from '@/hooks/useTodos';
 
 const logger: Logger = loggerFactory.create('TaskList');
 
 export default defineComponent({
   name: 'TaskList',
-  props: {
-    todos: {
-      required: true,
-      type: Array as PropType<Array<Todo>>
-    },
-    changed: {
-      required: true,
-      type: Function as PropType<UseTodos['onTodoChanged']>
-    },
-    deleted: {
-      required: true,
-      type: Function as PropType<UseTodos['onTodoDeleted']>
-    }
-  },
-  setup(props) {
-
-    const getOnDelete = (id: Todo['id']) => {
-      props.deleted(id);
-    };
+  props: {},
+  setup() {
+    const {
+      onTodoDeleted,
+      todos
+    } = useTodos();
 
     return {
-      getOnDelete
+      todos,
+      onTodoDeleted
     };
   }
 
@@ -53,11 +45,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#taskContainer {
-  display: flex;
-  justify-content: space-between;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 </style>

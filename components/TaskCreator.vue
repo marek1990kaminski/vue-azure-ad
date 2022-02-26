@@ -26,6 +26,7 @@
           <v-btn
             block
             type="submit"
+            color="purple"
           >
             ADD
           </v-btn>
@@ -41,7 +42,7 @@
 
 <script lang="ts">
 
-import {defineComponent, PropType, ref} from '@nuxtjs/composition-api';
+import {defineComponent, PropType, Ref, ref} from '@nuxtjs/composition-api';
 import loggerFactory, {Logger} from '@/utils/logger';
 import {UseTodos} from '@/hooks/useTodos';
 
@@ -60,12 +61,14 @@ export default defineComponent({
 
   },
   setup(props) {
-    const todoText = ref('');
+
+    const todoText: Ref<string> = ref('');
 
     const onchange = (event: any): void => {
       logger.debug('event', event);
     };
 
+    const valid: Ref<boolean> = ref(true);
     const onSubmit = () => {
       logger.debug('onSubmit!!!', {
         id: getId(),

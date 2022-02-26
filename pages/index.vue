@@ -14,7 +14,7 @@
     <v-row justify="center" align="center">
       <TaskList
         :todos="todos"
-        :changed="onTodoChanged"
+        :done="onTodoToggle"
         :deleted="onTodoDeleted"
       />
     </v-row>
@@ -42,6 +42,7 @@ export default defineComponent({
       todos,
       onTodoCreated,
       onTodoDeleted,
+      onTodoToggle,
       onTodoChanged
     } = useTodos();
     // const addTodo2 = () => {
@@ -53,6 +54,7 @@ export default defineComponent({
     // console.log('store.state.todos2', store.state.todos);
     return {
       todos,
+      onTodoToggle,
       onTodoChanged,
       onTodoDeleted,
       onTodoCreated
