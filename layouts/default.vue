@@ -1,4 +1,5 @@
 <template>
+
   <v-app dark>
 
     <v-navigation-drawer
@@ -35,6 +36,7 @@
       <v-toolbar-title v-text="title"/>
 
       <v-spacer/>
+
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
           <v-icon
@@ -50,6 +52,23 @@
         </template>
         <span>login through Azure</span>
       </v-tooltip>
+
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-icon
+            v-if="account!==undefined"
+            target="_blank"
+            color="red lighten-1"
+            v-bind="attrs"
+            v-on="on"
+            @click="signOut"
+          >
+            mdi-logout
+          </v-icon>
+        </template>
+        <span>logout</span>
+      </v-tooltip>
+
     </v-app-bar>
 
     <v-main>
@@ -64,11 +83,13 @@
     >
       <span>&copy; {{ new Date().getFullYear() }} by MK</span>
     </v-footer>
+
   </v-app>
+
 </template>
 
 <script lang="ts">
-import {defineComponent} from '@nuxtjs/composition-api';
+import {defineComponent, Ref, ref} from '@nuxtjs/composition-api';
 import * as msal from '@azure/msal-browser';
 import {AccountInfo, PublicClientApplication} from '@azure/msal-browser';
 import {createEvents} from 'micro-typed-events';
@@ -84,7 +105,7 @@ export default defineComponent({
   name,
   setup() {
 
-    let account: AccountInfo | undefined;
+    const account: Ref<AccountInfo | undefined> = ref(undefined);
     const {msalConfig} = useMsal();
 
     const msalInstance: PublicClientApplication = new msal.PublicClientApplication(msalConfig);
@@ -94,13 +115,20 @@ export default defineComponent({
       try {
         await msalInstance.loginPopup({});
         const myAccounts: Array<AccountInfo> = msalInstance.getAllAccounts();
-        account = myAccounts[0];
-        loginEvents.emit(['login', account]);
+        logger.debug('myAccounts', myAccounts);
+        account.value = myAccounts[0];
+        loginEvents.emit(['login', account.value]);
 
       } catch (error) {
         logger.debug(`error during authentication: ${error}`);
       }
 
+    };
+
+    const signOut = async () => {
+      await msalInstance.logoutPopup({});
+
+      loginEvents.emit(['logout', account.value as AccountInfo]);
     };
 
     return {
@@ -127,7 +155,8 @@ export default defineComponent({
       title: 'Todo App',
 
       account,
-      signIn
+      signIn,
+      signOut
     };
   }
 });

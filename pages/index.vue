@@ -47,13 +47,7 @@ export default defineComponent({
       onTodoDeleted,
       onTodoToggle
     } = useTodos();
-    // const addTodo2 = () => {
-    //   store.commit(_add, 'aaa');
-    // };
-    //
-    // addTodo2();
-    //
-    // console.log('store.state.todos2', store.state.todos);
+
     return {
       todos,
       onTodoToggle,
