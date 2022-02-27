@@ -37,10 +37,12 @@
 
       <v-spacer/>
 
-      <v-tooltip bottom>
+      <v-tooltip
+        v-if="!account"
+        bottom
+      >
         <template #activator="{ on, attrs }">
           <v-icon
-            v-if="!account"
             target="_blank"
             color="blue lighten-1"
             v-bind="attrs"
@@ -53,10 +55,12 @@
         <span>login through Azure</span>
       </v-tooltip>
 
-      <v-tooltip bottom>
+      <v-tooltip
+        v-if="!!account"
+        bottom
+      >
         <template #activator="{ on, attrs }">
           <v-icon
-            v-if="account!==undefined"
             target="_blank"
             color="red lighten-1"
             v-bind="attrs"
@@ -105,7 +109,7 @@ export default defineComponent({
   name,
   setup() {
 
-    const account: Ref<AccountInfo | undefined> = ref(undefined);
+    const account: Ref<AccountInfo | null> = ref(null);
     const {msalConfig} = useMsal();
 
     const msalInstance: PublicClientApplication = new msal.PublicClientApplication(msalConfig);
@@ -113,11 +117,12 @@ export default defineComponent({
     const signIn = async () => {
 
       try {
-        await msalInstance.loginPopup({});
+        await msalInstance.loginPopup();
         const myAccounts: Array<AccountInfo> = msalInstance.getAllAccounts();
         logger.debug('myAccounts', myAccounts);
         account.value = myAccounts[0];
         loginEvents.emit(['login', account.value]);
+        logger.debug('myAccounts', myAccounts);
 
       } catch (error) {
         logger.debug(`error during authentication: ${error}`);
@@ -126,9 +131,16 @@ export default defineComponent({
     };
 
     const signOut = async () => {
-      await msalInstance.logoutPopup({});
+      try {
+        await msalInstance.logoutPopup({
+          authority: msalConfig.auth.authority
+        });
+      } catch (error) {
+        logger.debug('error in signout ', error);
+        loginEvents.emit(['logout', account.value as AccountInfo]);
 
-      loginEvents.emit(['logout', account.value as AccountInfo]);
+      }
+
     };
 
     return {
