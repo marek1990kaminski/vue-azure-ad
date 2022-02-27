@@ -28,22 +28,24 @@ import TaskCreator from '~/components/TaskCreator.vue';
 import TaskList from '~/components/TaskList.vue';
 import {useTodos} from '~/hooks/useTodos';
 
-const logger: Logger = loggerFactory.create('index');
+const name = 'IndexPage';
+
+const logger: Logger = loggerFactory.create(name);
 
 export default defineComponent({
-  name: 'IndexPage',
+  name,
   components: {
     TaskCreator,
     TaskList
   },
-
+  mixins: [],
   setup() {
+
     const {
       todos,
       onTodoCreated,
       onTodoDeleted,
-      onTodoToggle,
-      onTodoChanged
+      onTodoToggle
     } = useTodos();
     // const addTodo2 = () => {
     //   store.commit(_add, 'aaa');
@@ -55,7 +57,6 @@ export default defineComponent({
     return {
       todos,
       onTodoToggle,
-      onTodoChanged,
       onTodoDeleted,
       onTodoCreated
     };

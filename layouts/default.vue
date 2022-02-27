@@ -34,6 +34,13 @@
 
       <v-spacer/>
 
+      <v-icon
+        v-if="!account"
+        target="_blank"
+        @click="signIn"
+      >
+        mdi-microsoft-azure
+      </v-icon>
     </v-app-bar>
 
     <v-main>
@@ -53,10 +60,39 @@
 
 <script lang="ts">
 import {defineComponent} from '@nuxtjs/composition-api';
+import * as msal from '@azure/msal-browser';
+import {AccountInfo, PublicClientApplication} from '@azure/msal-browser';
+import {createEvents} from 'micro-typed-events';
+import {useMsal} from '~/hooks/useMsal';
+import loggerFactory, {Logger} from '~/utils/logger';
+
+const name = 'DefaultLayout';
+
+const logger: Logger = loggerFactory.create(name);
+const loginEvents = createEvents<[string, AccountInfo]>();
 
 export default defineComponent({
-  name: 'DefaultLayout',
+  name,
   setup() {
+
+    let account: AccountInfo | undefined;
+    const {msalConfig} = useMsal();
+
+    const msalInstance: PublicClientApplication = new msal.PublicClientApplication(msalConfig);
+
+    const signIn = async () => {
+      await msalInstance
+        .loginPopup({})
+        .then(() => {
+          const myAccounts: Array<AccountInfo> = msalInstance.getAllAccounts();
+          account = myAccounts[0];
+          loginEvents.emit(['login', account]);
+        })
+        .catch((error) => {
+          logger.debug(`error during authentication: ${error}`);
+        });
+    };
+
     return {
       clipped: false,
       drawer: false,
@@ -78,7 +114,10 @@ export default defineComponent({
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Todo App'
+      title: 'Todo App',
+
+      account,
+      signIn
     };
   }
 });

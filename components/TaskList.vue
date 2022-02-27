@@ -41,6 +41,7 @@ const logger: Logger = loggerFactory.create('TaskList');
 
 export default defineComponent({
   name: 'TaskList',
+  middleware: ['middleware1', 'middleware2'],
   props: {},
   setup() {
     const {

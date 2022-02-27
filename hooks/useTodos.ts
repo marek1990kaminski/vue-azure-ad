@@ -16,14 +16,7 @@ export const getId = () => {
   return id;
 };
 
-export interface UseTodos {
-  todos: Ref<Array<Todo>>;
-  onTodoToggle: (id: Todo['id']) => void;
-  onTodoDeleted: (id: Todo['id']) => void;
-  onTodoCreated: (todo: Todo) => void;
-}
-
-const getTodos = (): UseTodos => {
+const getTodos = () => {
   const todos: Ref<Array<Todo>> = ref([]);
 
   const onTodoCreated = (todo: Todo): void => {
@@ -56,6 +49,6 @@ const getTodos = (): UseTodos => {
   };
 };
 
-const todos: UseTodos = getTodos();
-
-export const useTodos = () => todos;
+export type UseTodos = ReturnType<typeof getTodos>;
+const todosSingleton: UseTodos = getTodos();
+export const useTodos = (): UseTodos => todosSingleton;
