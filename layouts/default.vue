@@ -17,9 +17,11 @@
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
+
           <v-list-item-content>
             <v-list-item-title v-text="item.title"/>
           </v-list-item-content>
+
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -33,14 +35,21 @@
       <v-toolbar-title v-text="title"/>
 
       <v-spacer/>
-
-      <v-icon
-        v-if="!account"
-        target="_blank"
-        @click="signIn"
-      >
-        mdi-microsoft-azure
-      </v-icon>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-icon
+            v-if="!account"
+            target="_blank"
+            color="blue lighten-1"
+            v-bind="attrs"
+            v-on="on"
+            @click="signIn"
+          >
+            mdi-microsoft-azure
+          </v-icon>
+        </template>
+        <span>login through Azure</span>
+      </v-tooltip>
     </v-app-bar>
 
     <v-main>
@@ -81,16 +90,17 @@ export default defineComponent({
     const msalInstance: PublicClientApplication = new msal.PublicClientApplication(msalConfig);
 
     const signIn = async () => {
-      await msalInstance
-        .loginPopup({})
-        .then(() => {
-          const myAccounts: Array<AccountInfo> = msalInstance.getAllAccounts();
-          account = myAccounts[0];
-          loginEvents.emit(['login', account]);
-        })
-        .catch((error) => {
-          logger.debug(`error during authentication: ${error}`);
-        });
+
+      try {
+        await msalInstance.loginPopup({});
+        const myAccounts: Array<AccountInfo> = msalInstance.getAllAccounts();
+        account = myAccounts[0];
+        loginEvents.emit(['login', account]);
+
+      } catch (error) {
+        logger.debug(`error during authentication: ${error}`);
+      }
+
     };
 
     return {
