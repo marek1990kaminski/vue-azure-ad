@@ -1,7 +1,8 @@
 import {ref} from '@nuxtjs/composition-api';
+import {Configuration} from '@azure/msal-browser/dist/config/Configuration';
 
 const getMsal = () => {
-  const msalConfig = {
+  const msalConfig: Configuration = {
     auth: {
       clientId: '',
       authority: ''
