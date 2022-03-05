@@ -153,11 +153,6 @@ export default defineComponent({
           icon: 'mdi-apps',
           title: 'Welcome',
           to: '/'
-        },
-        {
-          icon: 'mdi-alert-circle',
-          title: 'Example error',
-          to: '/inspire'
         }
       ],
 
