@@ -8,15 +8,11 @@
     </v-card-title>
 
     <v-row justify="center" align="center">
-      <TaskCreator :onCreate="onTodoCreated"/>
+      <TaskCreator/>
     </v-row>
 
     <v-row justify="center" align="center">
-      <TaskList
-        :todos="todos"
-        :done="onTodoToggle"
-        :deleted="onTodoDeleted"
-      />
+      <TaskList/>
     </v-row>
   </v-card>
 </template>
